@@ -4,13 +4,13 @@
 
     <div class="col-sm-9 pull-left">
         <div class="row col-sm-12">
-            <form method="post" action="{{ route('companies.store') }}">
+            <form method="post" action="{{ route('projects.store') }}">
                 {{csrf_field()}}
 
                 <div class="form-group">
                     <label for="company-name">Name<span class="required">*</span></label>
                     <input placeholder="Enter Name"
-                           id="company-name"
+                           id="project-name"
                            required
                            name="name"
                            spellcheck="false"
@@ -18,14 +18,34 @@
                     >
                 </div>
                 <div class="form-group">
-                    <label for="company-content">Description</label>
+                    <label for="project-content">Description</label>
                     <textarea placeholder="Enter Description"
-                              id="company-content"
+                              id="project-content"
                               name="description"
                               rows="5"
                               spellcheck="true"
                               class="form-control autosize-target text-left">
                     </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="project-days">Duration (in days)<span class="required">*</span></label>
+                    <input  type="number"
+                            required
+                            placeholder="Enter Duration"
+                              id="project-days"
+                              name="days"
+                            class="form-control autosize-target text-left" />
+                </div>
+                <div class="form-group">
+                    <label for="company">Company<span class="required">*</span></label>
+                    <select required
+                              id="company"
+                              name="company"
+                             class="form-control autosize-target text-left" >
+                        @foreach($companies as $company)
+                        <option value="{{$company->id}}">{{$company->name}}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="form-group">

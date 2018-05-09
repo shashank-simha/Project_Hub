@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class CompaniesController extends Controller
 {
@@ -13,10 +14,27 @@ class CompaniesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $companies = Company::all();
-        return view('companies.index', ['companies'=>$companies]);
+        if($request->id)
+        {
+            if (Auth::check())
+            {
+                $companies = Auth::user()->companies;
+                $ret = view('companies.index', ['companies'=>$companies]);
+            }
+            else
+            {
+                $companies= Company::all();
+                $ret = view('companies.index', ['companies'=>$companies])->with('errors', ['You must be logged in to view your companies']);
+            }
+        }
+        else
+            {
+                $companies= Company::all();
+                $ret = view('companies.index', ['companies'=>$companies]);
+            }
+        return $ret;
     }
 
     /**
@@ -26,7 +44,7 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        //
+        return view('companies.create');
     }
 
     /**
@@ -37,7 +55,33 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Auth::check())
+        {
+            $companies = Company::all();
+            foreach ($companies as $company)
+            {
+                if($company->name == $request->input('name'))
+                {
+                    return back()->withInput()->with('errors', ['Company already exists']);
+                }
+            }
+            $company = Company::create([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'user_id' => Auth::user()->id
+            ]);
+
+            if ($company)
+            {
+                return redirect()->route('companies.show', ['company'=>$company->id])->with('success', 'Company created successfully');
+            }
+            else
+            {
+                return back()->withInput()->with('errors', ['Company not created, please try again later']);
+            }
+        }
+
+        return back()->withInput()->with('errors', ['You must be logged in to create a company']);
     }
 
     /**
@@ -49,7 +93,7 @@ class CompaniesController extends Controller
     public function show(Company $company)
     {
         $company = Company::where('id', $company->id)->first();
-        return view('companies.show', ['company'=>$company]);
+        return view('companies.show', ['company'=>$company, 'comments'=>$company->comments]);
     }
 
     /**
@@ -73,16 +117,31 @@ class CompaniesController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        $CompanyUpdate = Company::where('id', $company->id)
-                                        ->update([
-                                            'name' => $request->input('name'),
-                                            'description' => $request->input('description')
-                                        ]);
-        if($CompanyUpdate)
+        $Company = Company::where('id', $company->id)->first();
+        if (Auth::check())
         {
-            return redirect()->route('companies.show', ['company'=>$company->id])->with('success', 'Company details updated successfully');
+            $companies = Company::all();
+            foreach ($companies as $company)
+            {
+                if($company->name == $request->input('name') && $company->id != $Company->id)
+                {
+                    return back()->withInput()->with('errors', ['Company already exists']);
+                }
+            }
+            if (Auth::user()->id == $Company->user_id)
+            {
+                $CompanyUpdate = $Company
+                    ->update([
+                        'name' => $request->input('name'),
+                        'description' => $request->input('description')
+                    ]);
+                if ($CompanyUpdate)
+                {
+                    return redirect()->route('companies.show', ['company' => $company->id])->with('success', 'Company details updated successfully');
+                }
+            }
         }
-        return back()->withInput();
+        return back()->withInput()->with('errors', ['You are not authenticated to edit details of the company']);
     }
 
     /**
@@ -93,6 +152,19 @@ class CompaniesController extends Controller
      */
     public function destroy(Company $company)
     {
-        dd($company);
+        $Company = Company::where('id',$company->id)->first();
+        if (Auth::check())
+        {
+            if (Auth::user()->id == $Company->user_id)
+            {
+                if ($Company->delete())
+                {
+                    return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
+                }
+
+                return back()->withInput()->with('errors', ['company could not be deleted']);
+            }
+        }
+        return back()->withInput()->with('errors', ['You are not authenticated to delete the company']);
     }
 }

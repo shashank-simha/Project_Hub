@@ -4,7 +4,7 @@
 
     <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-primary">
-        <div class="panel-heading">Companies</div>
+        <div class="panel-heading">Companies <a class="btn btn-warning pull-right btn-sm" href="{{route('companies.create')}}">Create Company</a></div>
         <div class="panel-body">
 
         <ul class="list-group">

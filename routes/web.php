@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function ()
+{
     return view('welcome');
 });
 
@@ -23,4 +24,5 @@ Route::resource('companies', 'CompaniesController');
 Route::resource('projects', 'ProjectsController');
 Route::resource('roles', 'RolesController');
 Route::resource('tasks', 'TasksController');
+Route::resource('comments', 'CommentsController');
 Route::resource('users', 'UsersController');

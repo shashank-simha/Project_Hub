@@ -42,6 +42,9 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
+                        <li><a href="{{ route('companies.index') }}">Companies</a></li>
+                        <li><a href="{{ route('projects.index') }}">Projects</a></li>
+                        <li><a href="{{ route('tasks.index') }}">Tasks</a></li>
                         @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
@@ -52,9 +55,12 @@
                                 </a>
 
                                 <ul class="dropdown-menu">
+                                    <li><a href="{{route('companies.index',['id'=>'1'])}}">My Companies</a></li>
+                                    <li><a href="{{route('projects.index',['id'=>'1'])}}">My Projects</a></li>
+                                    <li><a href="{{route('tasks.index',['id'=>'1'])}}">My Tasks</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
+                                           onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
