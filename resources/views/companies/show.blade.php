@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="col-sm-9">
+    <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 pull-left">
     <div class="">
     <div class="jumbotron">
         <h1>{{$company->name}}</h1>
@@ -33,19 +33,19 @@
         </div>
         @include('partials.comments')
         <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 col-md-12">
         @foreach($company->projects as $project)
-            <div class="col-sm-4 well well-md">
-                <h2>{{$project->name}}</h2>
-                <p class="text-danger" style="overflow-wrap: break-word">{{$project->description}}</p>
-                <p><a class="btn btn-primary" href="{{route('projects.show', [$project->id])}}" role="button">View Project >></a></p>
+            <div class="col-sm-12 col-md-4 well well-sm well-md">
+                <h2>{{substr($project->name, 0, 10)}}</h2>
+                <p class="text-danger" style="overflow-wrap: break-word ">{{substr($project->description, 0, 30).'...'}}</p>
+                <p class="pull-right"><a class="btn btn-primary" href="{{route('projects.show', [$project->id])}}" role="button">View Project >></a></p>
             </div>
         @endforeach
         </div>
     </div>
     </div>
 
-    <div class="col-sm-3 pull-right">
+    <div class="col-sm-12 col-xs-12 col-md-3 col-lg-3">
         <div class="sidebar-moduel">
             <h4>Actions</h4>
             <ol class="list-unstyled">
@@ -60,8 +60,8 @@
                 <li><a href="{{route('projects.create')}}">Add Project</a></li>
                 <li><a href="{{route('companies.create')}}">Create Company</a></li>
             </ol>
+        </p>
         </div>
-
     </div>
 <script>
         function del()

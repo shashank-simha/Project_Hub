@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Project;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Models\ProjectUser;
+use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
@@ -65,7 +67,6 @@ class ProjectsController extends Controller
     {
         if (Auth::check())
         {
-
             $company = Company::find($request->input('company'));
             if($company->user_id != Auth::user()->id)
             {
@@ -78,6 +79,13 @@ class ProjectsController extends Controller
                     return back()->withInput()->with('errors', ['A project with same name exists in this company']);
                 }
             }
+
+            //verify duration
+            if ($request->input('days')>365 || $request->input('days')<1)
+            {
+                return back()->withInput()->with('errors', ['Duration should be between 1 and 365']);
+            }
+
             $project = Project::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
@@ -199,5 +207,42 @@ class ProjectsController extends Controller
             }
         }
         return back()->withInput()->with('errors', ['You are not authenticated to delete the project']);
+    }
+
+    public function adduser(Request $request)
+    {
+        if (Auth::check())
+        {
+            $project = Project::find($request->input('project_id'));
+            if ($project)
+            {
+
+                if (Auth::user()->id == $project->user_id)
+                {
+                    $user = User::where('email', $request->input('email'))->first(); //single record
+                    if ($user)
+                    {
+                    //check if user is already added to the project
+                    $projectUser = ProjectUser::where('user_id', $user->id)
+                        ->where('project_id', $project->id)
+                        ->first();
+
+                    if ($projectUser)
+                    {
+                        //if user already exists, exit
+                        return back()->withInput()->with('success', $request->input('email') . ' is already a member of this project');
+                    }
+
+                    $project->users()->attach($user->id);
+                    return back()->withInput()->with('success', $request->input('email') . ' was added to the project successfully');
+
+                }
+                    return back()->withInput()->with('errors', ['No user with this email exists']);
+                }
+                return redirect()->route('projects.show', ['project' => $project->id])->with('errors', 'You are not authenticated to add members to this project');
+            }
+            return redirect()->route('projects.index')->with('errors', ['Project not found']);
+        }
+        return back()->withInput()->with('errors', ['You must be logged in to add members to a project']);
     }
 }

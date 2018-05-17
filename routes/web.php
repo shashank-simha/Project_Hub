@@ -19,6 +19,7 @@ Route::get('/', function ()
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/projects/adduser', 'ProjectsController@adduser')->name('projects.adduser');
 
 Route::resource('companies', 'CompaniesController');
 Route::resource('projects', 'ProjectsController');

@@ -2,16 +2,14 @@
 
 @section('content')
 
-    <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 pull-left">
-        <div>
+    <div class="col-sm-9 pull-left">
         <div class="well well-md">
             <h1>{{$project->name}}</h1>
             <h4>created by <a href="{{route('companies.show', $project->company_id)}}">{{$project->company->name}}</a></h4>
             <p class="lead">{{$project->description}}</p>
         </div>
-            <div class="pull-right"><a class="btn pull-right btn-primary" href="{{route('tasks.create')}}" style="background: #ffffff;color: #7a91ff;">Add Task</a></div>
-        </div>
-        <div class="row col-md-6">
+        <div class="pull-right"><a class="btn pull-right btn-primary" href="{{route('tasks.create')}}" style="background: #ffffff;color: #7a91ff;">Add Task</a></div>
+        <div class="col-md-6">
         <form method="post" action="{{ route('comments.store') }}">
             {{csrf_field()}}
             <input type="hidden" name="commentable_type" value="App\Models\Project">
@@ -36,17 +34,17 @@
         <div class="row">
             <div class="col-sm-12">
                 @foreach($project->tasks as $task)
-                    <div class="col-sm-12 col-md-4">
-                        <h2>{{substr($task->name, 0, 10)}}</h2>
-                        <p class="text-danger" style="overflow-wrap: break-word ">{{substr($task->description, 0, 30).'...'}}</p>
-                        <p class="pull-right"><a class="btn btn-primary" href="{{route('tasks.show', [$task->id])}}" role="button">View Task >></a></p>
+                    <div class="col-sm-4">
+                        <h2>{{$task->name}}</h2>
+                        <p class="text-danger" style="overflow-wrap: break-word">{{$task->description}}</p>
+                        <p><a class="btn btn-primary" href="{{route('tasks.show', [$task->id])}}" role="button">View Project >></a></p>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
 
-    <div class="col-sm-12 col-xs-12 col-md-3 col-lg-3">
+    <div class="col-sm-3 pull-right">
         <div class="sidebar-moduel">
             <h4>Actions</h4>
             <ol class="list-unstyled">
@@ -66,7 +64,7 @@
 
             <h4>Add members</h4>
             <div class="row">
-                <div class="col-lg-12 col-md-12 ">
+                <div class="col-lg-12 col-md-12 col-xs-12  col-sm-12 ">
                     <form id="add-user" action="{{ route('projects.adduser') }}"  method="POST" >
                         {{ csrf_field() }}
                         <div class="input-group">
