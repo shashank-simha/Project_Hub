@@ -20,6 +20,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/projects/adduser', 'ProjectsController@adduser')->name('projects.adduser');
+Route::post('/tasks/adduser', 'TasksController@adduser')->name('tasks.adduser');
 
 Route::resource('companies', 'CompaniesController');
 Route::resource('projects', 'ProjectsController');

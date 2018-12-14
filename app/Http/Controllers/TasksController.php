@@ -130,7 +130,8 @@ class TasksController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        $task = Task::where('id', $task->id)->first();
+        return view('tasks.show', ['task'=>$task,  'comments'=>  $task->comments]);
     }
 
     /**
@@ -165,5 +166,42 @@ class TasksController extends Controller
     public function destroy(Task $task)
     {
         //
+    }
+
+    public function adduser(Request $request)
+    {
+        if (Auth::check())
+        {
+            $task = Task::find($request->input('task_id'));
+            if ($task)
+            {
+
+                if (Auth::user()->id == $task->user_id)
+                {
+                    $user = User::where('email', $request->input('email'))->first(); //single record
+                    if ($user)
+                    {
+                        //check if user is already added to the project
+                        $taskUser = TaskUser::where('user_id', $user->id)
+                            ->where('task_id', $task->id)
+                            ->first();
+
+                        if ($taskUser)
+                        {
+                            //if user already exists, exit
+                            return back()->withInput()->with('success', $request->input('email') . ' is already a member of this task');
+                        }
+
+                        $task->users()->attach($user->id);
+                        return back()->withInput()->with('success', $request->input('email') . ' was added to the task successfully');
+
+                    }
+                    return back()->withInput()->with('errors', ['No user with this email exists']);
+                }
+                return redirect()->route('tasks.show', ['task' => $task->id])->with('errors', 'You are not authenticated to add members to this task');
+            }
+            return redirect()->route('tasks.index')->with('errors', ['Task not found']);
+        }
+        return back()->withInput()->with('errors', ['You must be logged in to add members to a task']);
     }
 }
