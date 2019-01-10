@@ -253,4 +253,41 @@ class ProjectsController extends Controller
         }
         return back()->withInput()->with('errors', ['You must be logged in to add members to a project']);
     }
+
+    public function removeuser(Request $request)
+    {
+        if (Auth::check())
+        {
+            $project = Project::find($request->input('project_id'));
+            if ($project)
+            {
+
+                if (Auth::user()->id == $project->user_id || Auth::user()->role_id == 1)
+                {
+                    $user = User::find($request->input('user_id')); //single record
+                    if ($user)
+                    {
+                        //check if user is already added to the project
+                        $projectUser = ProjectUser::where('user_id', $user->id)
+                            ->where('project_id', $project->id)
+                            ->first();
+
+                        if ($projectUser)
+                        {
+                            //if user exists, remove
+                            $project->users()->detach($user->id);
+                            return back()->with('success', $user->email . ' was removed from the project successfully');
+                        }
+
+                        return back()->with('errors', [$user->email . ' is not a member of the project']);
+
+                    }
+                    return back()->withInput()->with('errors', ['No user with this email exists']);
+                }
+                return redirect()->route('projects.show', ['project' => $project->id])->with('errors', 'You are not authenticated to remove members from this project');
+            }
+            return redirect()->route('projects.index')->with('errors', ['Project not found']);
+        }
+        return back()->withInput()->with('errors', ['You must be logged in to add members to a project']);
+    }
 }

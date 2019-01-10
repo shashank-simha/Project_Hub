@@ -21,6 +21,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/projects/adduser', 'ProjectsController@adduser')->name('projects.adduser');
 Route::post('/tasks/adduser', 'TasksController@adduser')->name('tasks.adduser');
+Route::post('/projects/removeuser', 'ProjectsController@removeuser')->name('projects.removeuser');
+Route::post('/tasks/removeuser', 'TasksController@removeuser')->name('tasks.removeuser');
 
 Route::resource('companies', 'CompaniesController');
 Route::resource('projects', 'ProjectsController');

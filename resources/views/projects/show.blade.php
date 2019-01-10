@@ -83,7 +83,23 @@
             <h4>Team Members</h4>
             <ol class="list-unstyled" id="member-list">
                 @foreach($project->users as $user)
-                    <li><a href="#"> {{$user->email}} </a> </li>
+                    <li>
+                        <div class="">
+                            <div class="col-lg-10 col-md-10">
+                            <a href="#"> {{$user->email}} </a>
+                            </div>
+                            <div class="col-lg-1 col-md-1">
+                            <form id="remove-user" action="{{ route('projects.removeuser') }}"  method="POST" >
+                                {{ csrf_field() }}
+                                <div class="input-group">
+                                    <input class="form-control" name = "project_id" id="project_id" value="{{$project->id}}" type="hidden">
+                                    <input class="form-control" name = "user_id" id="user_id" value="{{$user->id}}" type="hidden">
+                                </div><!-- /input-group -->
+                                <a><i class="fa fa-trash" aria-hidden="true" onclick="this.parentElement.parentElement.submit()"></i></a>
+                            </form>
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </li>
                 @endforeach
             </ol>
 
