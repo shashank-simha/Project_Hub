@@ -22,7 +22,7 @@ class ProjectsController extends Controller
         {
             if (Auth::check())
             {
-                $projects = Project::where('user_id', Auth::user()->id)->get();
+                $projects = Auth::user()->projects;
                 $ret = view('projects.index', ['projects'=>$projects]);
             }
             else

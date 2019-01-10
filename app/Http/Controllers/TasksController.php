@@ -23,7 +23,7 @@ class TasksController extends Controller
         {
             if (Auth::check())
             {
-                $tasks = Task::where('user_id', Auth::user()->id)->get();
+                $tasks = Auth::user()->tasks;
                 $ret = view('tasks.index', ['tasks'=>$tasks]);
             }
             else
