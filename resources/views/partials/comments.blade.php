@@ -6,7 +6,7 @@
     	    <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <span class="glyphicon glyphicon-comment"></span> 
+                        <span class="fa fa-comment"></span> 
                         Recent Comments
                     </h3>
                 </div>
