@@ -225,7 +225,7 @@ class ProjectsController extends Controller
             if ($project)
             {
 
-                if (Auth::user()->id == $project->user_id || Auth::user()->role_id == 1)
+                if (Auth::user()->id == $project->user_id)
                 {
                     $user = User::where('email', $request->input('email'))->first(); //single record
                     if ($user)
@@ -247,7 +247,7 @@ class ProjectsController extends Controller
                 }
                     return back()->withInput()->with('errors', ['No user with this email exists']);
                 }
-                return redirect()->route('projects.show', ['project' => $project->id])->with('errors', 'You are not authenticated to add members to this project');
+                return redirect()->route('projects.show', ['project' => $project->id])->with('errors', ['You are not authenticated to add members to this project']);
             }
             return redirect()->route('projects.index')->with('errors', ['Project not found']);
         }
