@@ -212,4 +212,42 @@ class TasksController extends Controller
         }
         return back()->withInput()->with('errors', ['You must be logged in to add members to a task']);
     }
+
+    public function removeuser(Request $request)
+    {
+        if (Auth::check())
+        {
+            $task = Task::find($request->input('task_id'));
+            if ($task)
+            {
+
+                if (Auth::user()->id == $task->user_id || Auth::user()->role_id == 1)
+                {
+                    $user = User::find($request->input('user_id')); //single record
+                    if ($user)
+                    {
+                        //check if user is already added to the project
+                        $taskUser = TaskUser::where('user_id', $user->id)
+                            ->where('task_id', $task->id)
+                            ->first();
+
+                        if ($taskUser)
+                        {
+                            //if user exists, remove
+                            $task->users()->detach($user->id);
+                            return back()->with('success', $user->email . ' was removed from the task successfully');
+                        }
+
+                        return back()->with('errors', [$user->email . ' is not a member of the task']);
+
+                    }
+                    return back()->withInput()->with('errors', ['No user with this email exists']);
+                }
+                return redirect()->route('tasks.show', ['task' => $task->id])->with('errors', ['You are not authenticated to remove members from this task']);
+            }
+            return redirect()->route('tasks.index')->with('errors', ['Task not found']);
+        }
+        return back()->withInput()->with('errors', ['You must be logged in to remove members to a task']);
+    }
+
 }
