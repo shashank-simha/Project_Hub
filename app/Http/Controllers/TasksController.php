@@ -49,7 +49,15 @@ class TasksController extends Controller
     {
         if (Auth::check())
         {
-            $projects = Auth::user()->projects;
+            if (Auth::user()->role_id == 1)
+            {
+                $projects = Project::all();
+            }
+
+            else
+            {
+                $projects = Auth::user()->projects;
+            }
         }
         else
         {
@@ -77,7 +85,7 @@ class TasksController extends Controller
                     $member = true;
                 }
             }
-            if (!$member)
+            if (!$member && Auth::user()->role_id != 1)
             {
                 return back()->withInput()->with('errors', ['Only members are authorized to add tasks in this project']);
             }
@@ -176,7 +184,7 @@ class TasksController extends Controller
             if ($task)
             {
 
-                if (Auth::user()->id == $task->user_id)
+                if (Auth::user()->id == $task->user_id || Auth::user()->role_id == 1)
                 {
                     $user = User::where('email', $request->input('email'))->first(); //single record
                     if ($user)

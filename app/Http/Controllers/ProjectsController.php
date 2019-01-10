@@ -48,7 +48,15 @@ class ProjectsController extends Controller
     {
         if (Auth::check())
         {
-            $companies = Auth::user()->companies;
+            if (Auth::user()->role_id == 1)
+            {
+                $companies = Company::all();
+            }
+
+            else
+            {
+                $companies = Auth::user()->companies;
+            }
         }
         else
         {
@@ -68,7 +76,7 @@ class ProjectsController extends Controller
         if (Auth::check())
         {
             $company = Company::find($request->input('company'));
-            if($company->user_id != Auth::user()->id)
+            if($company->user_id != Auth::user()->id && Auth::user()->role_id != 1)
             {
                 return back()->withInput()->with('errors', ['You are not authorized to create a project in this company']);
             }
@@ -150,7 +158,7 @@ class ProjectsController extends Controller
         if (Auth::check())
         {
             $Project = Project::where('id', $project->id)->first();
-            if($Project->user_id != Auth::user()->id)
+            if($Project->user_id != Auth::user()->id && Auth::user()->role_id != 1)
             {
                 return back()->withInput()->with('errors', ['You are not authorized to edit project details']);
             }
@@ -196,7 +204,7 @@ class ProjectsController extends Controller
         $Project = Project::where('id',$project->id)->first();
         if (Auth::check())
         {
-            if (Auth::user()->id == $Project->user_id)
+            if (Auth::user()->id == $Project->user_id && Auth::user()->role_id != 1)
             {
                 if ($Project->delete())
                 {
@@ -217,7 +225,7 @@ class ProjectsController extends Controller
             if ($project)
             {
 
-                if (Auth::user()->id == $project->user_id)
+                if (Auth::user()->id == $project->user_id || Auth::user()->role_id == 1)
                 {
                     $user = User::where('email', $request->input('email'))->first(); //single record
                     if ($user)
