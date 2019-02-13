@@ -78,6 +78,7 @@ class TasksController extends Controller
         {
             $project = Project::find($request->input('project'));
             $member = false;
+
             foreach($project->users as $user)
             {
                 if($user->id == Auth::user()->id)
@@ -85,10 +86,12 @@ class TasksController extends Controller
                     $member = true;
                 }
             }
+
             if (!$member && Auth::user()->role_id != 1)
             {
                 return back()->withInput()->with('errors', ['Only members are authorized to add tasks in this project']);
             }
+
             foreach ($project->tasks as $task)
             {
                 if($task->name == $request->input('name'))
@@ -150,7 +153,23 @@ class TasksController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        if (Auth::check())
+        {
+            if (Auth::user()->role_id == 1)
+            {
+                $projects = Project::all();
+            }
+
+            else
+            {
+                $projects = Auth::user()->projects;
+            }
+        }
+        else
+        {
+            $projects = [];
+        }
+        return view('tasks.edit', ['task'=>$task, 'projects'=>$projects]);
     }
 
     /**
@@ -162,7 +181,61 @@ class TasksController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        if (Auth::check())
+        {
+            $Task = Task::where('id', $task->id)->first();
+            $project = Project::find($request->input('project'));
+            $member = false;
+            foreach($project->users as $user)
+            {
+                if($user->id == Auth::user()->id)
+                {
+                    $member = true;
+                }
+            }
+            if (!$member && Auth::user()->role_id != 1)
+            {
+                return back()->withInput()->with('errors', ['Only members are authorized to edit tasks in this project']);
+            }
+            foreach ($project->tasks as $task)
+            {
+                if($task->name == $request->input('name') && $task->id != $Task->id)
+                {
+                    return back()->withInput()->with('errors', ['A task with same name exists in this project']);
+                }
+            }
+
+            //verify duration
+            if ($request->input('days')>365 || $request->input('days')<1)
+            {
+                return back()->withInput()->with('errors', ['Duration should be between 1 and 365']);
+            }
+            if ($request->input('hours')>23 || $request->input('hours')<1)
+            {
+                return back()->withInput()->with('errors', ['Duration should be between 1 and 23']);
+            }
+
+            $TaskUpdate = $Task->update([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'days' => $request->input('days'),
+                'hours' => $request->input('hours'),
+                'company_id' => $project->company_id,
+                'user_id' => Auth::user()->id,
+                'project_id' => $request->input('project'),
+            ]);
+
+            if ($TaskUpdate)
+            {
+                return redirect()->route('tasks.show', ['tasks'=>$task->id])->with('success', 'Task details updated successfully');
+            }
+            else
+            {
+                return back()->withInput()->with('errors', ['Task details not updated, please try again later']);
+            }
+        }
+
+        return back()->withInput()->with('errors', ['You must be logged in to update task details']);
     }
 
     /**
@@ -173,7 +246,23 @@ class TasksController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $Task = Task::where('id',$task->id)->first();
+        if (Auth::check())
+        {
+            if (Auth::user()->id == $task->user_id || Auth::user()->role_id == 1)
+            {
+                if ($task->delete())
+                {
+                    return redirect()->route('tasks.index')->with('success', 'Task deleted successfully');
+                }
+
+                return back()->withInput()->with('errors', ['project could not be deleted']);
+            }
+
+            return back()->withInput()->with('errors', ['You are not authenticated to delete the task']);
+        }
+
+        return back()->withInput()->with('errors', ['You must be logged in to delete the task']);
     }
 
     public function adduser(Request $request)
@@ -249,5 +338,4 @@ class TasksController extends Controller
         }
         return back()->withInput()->with('errors', ['You must be logged in to remove members to a task']);
     }
-
 }
