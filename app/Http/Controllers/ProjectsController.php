@@ -216,13 +216,14 @@ class ProjectsController extends Controller
             {
                 if ($Project->delete())
                 {
-                    return redirect()->route('projects.index')->with('success', 'Company deleted successfully');
+                    return redirect()->route('projects.index')->with('success', 'Project deleted successfully');
                 }
 
-                return back()->withInput()->with('errors', ['project could not be deleted']);
+                return back()->withInput()->with('errors', ['Project could not be deleted']);
             }
+            return back()->withInput()->with('errors', ['You are not authenticated to delete the project']);
         }
-        return back()->withInput()->with('errors', ['You are not authenticated to delete the project']);
+        return back()->withInput()->with('errors', ['You must be logged in to delete the project']);
     }
 
     public function adduser(Request $request)
