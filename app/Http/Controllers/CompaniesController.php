@@ -120,6 +120,10 @@ class CompaniesController extends Controller
         $Company = Company::where('id', $company->id)->first();
         if (Auth::check())
         {
+            if($Company->user_id != Auth::user()->id && Auth::user()->role_id != 1)
+            {
+                return back()->withInput()->with('errors', ['You are not authorized to edit company details']);
+            }
             $companies = Company::all();
             foreach ($companies as $company)
             {
@@ -128,20 +132,24 @@ class CompaniesController extends Controller
                     return back()->withInput()->with('errors', ['Company already exists']);
                 }
             }
-            if (Auth::user()->id == $Company->user_id)
+
+            $CompanyUpdate = $Company
+                ->update([
+                    'name' => $request->input('name'),
+                    'description' => $request->input('description')
+                ]);
+            if ($CompanyUpdate)
             {
-                $CompanyUpdate = $Company
-                    ->update([
-                        'name' => $request->input('name'),
-                        'description' => $request->input('description')
-                    ]);
-                if ($CompanyUpdate)
-                {
-                    return redirect()->route('companies.show', ['company' => $company->id])->with('success', 'Company details updated successfully');
-                }
+                return redirect()->route('companies.show', ['company' => $company->id])->with('success', 'Company details updated successfully');
+            }
+
+            else
+            {
+                return back()->withInput()->with('errors', ['Company details not updated, please try again later']);
             }
         }
-        return back()->withInput()->with('errors', ['You are not authenticated to edit details of the company']);
+
+        return back()->withInput()->with('errors', ['You must be logged in to edit details of the company' . Auth::check()]);
     }
 
     /**
@@ -155,16 +163,19 @@ class CompaniesController extends Controller
         $Company = Company::where('id',$company->id)->first();
         if (Auth::check())
         {
-            if (Auth::user()->id == $Company->user_id)
+            if($Company->user_id != Auth::user()->id && Auth::user()->role_id != 1)
             {
-                if ($Company->delete())
-                {
-                    return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
-                }
-
-                return back()->withInput()->with('errors', ['company could not be deleted']);
+                return back()->withInput()->with('errors', ['You are not authorized to delete this company']);
             }
+
+            if ($Company->delete())
+            {
+                return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
+            }
+
+            return back()->withInput()->with('errors', ['company could not be deleted']);
+
         }
-        return back()->withInput()->with('errors', ['You are not authenticated to delete the company']);
+        return back()->withInput()->with('errors', ['You must be logged in to delete the company']);
     }
 }
