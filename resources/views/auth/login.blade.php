@@ -2,68 +2,81 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+    <div id="form-section" class="container-fluid signin">
+        <div class="row top-buffer">
+            <div class="info-slider-holder">
+                <div class="info-holder">
+                    <h6>A Service you can anytime modify.</h6>
+                    <div class="bold-title">it’s not that hard to get<br>
+                        a website <span>anymore.</span></div>
+                    <div class="mini-testimonials-slider">
+                        <div>
+                            <div class="details-holder">
+                                <img class="photo" src="{{ asset('images/person1.jpg') }}" alt="">
+                                <h4>Chris Walker</h4>
+                                <h5>CEO & CO-Founder @HelloBrandio</h5>
+                                <p>“In hostify we trust. I am with them for over
+                                    7 years now. It always felt like home!
+                                    Loved their customer support”</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="details-holder">
+                                <img class="photo" src="{{ asset('images/person2.jpg') }}" alt="">
+                                <h4>Chris Walker</h4>
+                                <h5>CEO & CO-Founder @HelloBrandio</h5>
+                                <p>“In hostify we trust. I am with them for over
+                                    7 years now. It always felt like home!
+                                    Loved their customer support”</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="menu-holder">
+                    <ul class="main-links">
+                        <li><a class="normal-link" href="{{ route('register') }}">Don’t have an account?</a></li>
+                        <li><a class="sign-button" href="{{ route('register') }}">Register</a></li>
+                    </ul>
+                </div>
+                <div class="signin-signup-form">
+                    <div class="form-items">
+                        <div class="form-title">Login to your account</div>
+                        <form id="signinform"method="POST" action="{{ route('login') }}">
+                            {{ csrf_field() }}
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <div class="form-text">
+                                    <input id="email" type="email" class="form-control" placeholder="E-mail Address" name="email" value="{{ old('email') }}" required autofocus>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
+                                    @endif
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <div class="form-text">
+                                    <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                    </form>
+
+                            <div class="form-button">
+                                <button id="submit" type="submit" class="ybtn ybtn-accent-color">Login</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

@@ -12,89 +12,88 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-slider.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/slick.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
 
     <script src="https://use.fontawesome.com/874dbadbd7.js"></script>
 
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        <li><a href="{{ route('companies.index') }}"><i class="fa fa-building" aria-hidden="true"></i> Companies</a></li>
-                        <li><a href="{{ route('projects.index') }}"><i class="fa fa-briefcase" aria-hidden="true"></i> Projects</a></li>
-                        <li><a href="{{ route('tasks.index') }}"><i class="fa fa-tasks" aria-hidden="true"></i> Tasks</a></li>
-                        @guest
-                            <li><a href="{{ route('login') }}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
-                            <li><a href="{{ route('register') }}"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a></li>
-                        @else
-                            @if(Auth::user()->role_id == 1)
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
-                                     Admin<span class="caret"></span>
+        <nav id="nav" class="navbar navbar-default navbar-full" style="background-color: #0c5ac0">
+            <div class="container-fluid">
+                <div class="container container-nav">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="navbar-header">
+                                <button aria-expanded="false" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="logo-holder" href="{{ url('/') }}">
+                                    <div class="logo" style="height:18px">{{ config('app.name', 'Laravel') }}</div>
                                 </a>
+                            </div>
 
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{route('users.index')}}">All Users</a></li>
-                                    <li><a href="{{route('companies.index')}}">All Companies</a></li>
-                                    <li><a href="{{route('projects.index')}}">All Projects</a></li>
-                                    <li><a href="{{route('tasks.index')}}">All Tasks</a></li>
-                                    <li><a href="{{route('roles.index')}}">All Tasks</a></li>
-                                </ul>
-                            </li>
-                            @endif
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                            <div style="height: 1px;" role="main" aria-expanded="false" class="navbar-collapse collapse" id="bs">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <!-- Authentication Links -->
+                                    <li><a href="{{ route('companies.index') }}"><i class="fa fa-building" aria-hidden="true"></i> Companies</a></li>
+                                    <li><a href="{{ route('projects.index') }}"><i class="fa fa-briefcase" aria-hidden="true"></i> Projects</a></li>
+                                    <li><a href="{{ route('tasks.index') }}"><i class="fa fa-tasks" aria-hidden="true"></i> Tasks</a></li>
+                                    @guest
+                                        <li><a href="{{ route('login') }}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+                                        <li><a href="{{ route('register') }}"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</a></li>
+                                    @else
+                                        @if(Auth::user()->role_id == 1)
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                                                    Admin<span class="caret"></span>
+                                                </a>
 
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{route('companies.index',['id'=>'1'])}}">My Companies</a></li>
-                                    <li><a href="{{route('projects.index',['id'=>'1'])}}">My Projects</a></li>
-                                    <li><a href="{{route('tasks.index',['id'=>'1'])}}">My Tasks</a></li>
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="{{route('companies.index')}}">All Companies</a></li>
+                                                    <li><a href="{{route('projects.index')}}">All Projects</a></li>
+                                                    <li><a href="{{route('tasks.index')}}">All Tasks</a></li>
+                                                </ul>
+                                            </li>
+                                        @endif
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                                                {{ Auth::user()->name }} <span class="caret"></span>
+                                            </a>
+
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{{route('companies.index',['id'=>'1'])}}">My Companies</a></li>
+                                                <li><a href="{{route('projects.index',['id'=>'1'])}}">My Projects</a></li>
+                                                <li><a href="{{route('tasks.index',['id'=>'1'])}}">My Tasks</a></li>
+                                                <li>
+                                                    <a href="{{ route('logout') }}"
+                                                       onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
+                                                        Logout
+                                                    </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
+                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                        {{ csrf_field() }}
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    @endguest
                                 </ul>
-                            </li>
-                        @endguest
-                    </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
-        <div class="container">
+        <div class="container bottom-buffer top-buffer">
 
             @include('partials.errors')
             @include('partials.success')
@@ -109,5 +108,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-slider.min.js') }}"></script>
+    <script src="{{ asset('js/slick.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 </body>
 </html>
