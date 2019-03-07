@@ -93,6 +93,8 @@
                                 <button id="submit" type="submit" class="ybtn ybtn-accent-color">Create new account</button>
                             </div>
                         </form>
+                        <div class="bottom-buffer top-buffer" style="visibility: hidden">2</div>
+                        <div class="bottom-buffer top-buffer" style="visibility: hidden">2</div>
                     </div>
                 </div>
             </div>

@@ -24,7 +24,7 @@
 </head>
 <body>
     <div id="app">
-        <nav id="nav" class="navbar navbar-default navbar-full" style="background-color: #0c5ac0">
+        <nav id="nav" class="navbar navbar-default navbar-full nav-bg">
             <div class="container-fluid">
                 <div class="container container-nav">
                     <div class="row">
@@ -102,6 +102,36 @@
 
                 @yield('content')
 
+            </div>
+        </div>
+
+        <div id="footer" class="container-fluid">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="address-holder">
+                            <div class="phone"><i class="fas fa-phone"></i> 00 285 900 38502</div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="address-holder">
+                            <div class="email"><i class="fas fa-envelope"></i> enquiry@projecthub.com</div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="address-holder">
+                            <div class="address">
+                                <i class="fas fa-map-marker"></i>
+                                <div>City Avenue, Office 64,<br>
+                                    Floor 6,  Milbourne,<br>
+                                    Australia.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
