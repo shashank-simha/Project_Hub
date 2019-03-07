@@ -69,6 +69,7 @@
                                             </a>
 
                                             <ul class="dropdown-menu">
+                                                <li><a href="{{route('home')}}">Dashboard</a></li>
                                                 <li><a href="{{route('companies.index',['id'=>'1'])}}">My Companies</a></li>
                                                 <li><a href="{{route('projects.index',['id'=>'1'])}}">My Projects</a></li>
                                                 <li><a href="{{route('tasks.index',['id'=>'1'])}}">My Tasks</a></li>
