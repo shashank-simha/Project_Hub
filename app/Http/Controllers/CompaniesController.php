@@ -140,7 +140,7 @@ class CompaniesController extends Controller
                 ]);
             if ($CompanyUpdate)
             {
-                return redirect()->route('companies.show', ['company' => $company->id])->with('success', 'Company details updated successfully');
+                return redirect()->route('companies.show', ['company' => $Company->id])->with('success', 'Company details updated successfully');
             }
 
             else
