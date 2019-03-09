@@ -251,7 +251,7 @@
                     <div id="testimonials-slider">
                         <div>
                             <div class="details-holder">
-                                <img class="photo" src="images/person1.jpg" alt="">
+                                <img class="photo" src="{{ asset('images/person1.jpg') }}" alt="">
                                 <h4>Chris Walker</h4>
                                 <h5>CEO & CO-Founder @HelloBrandio</h5>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris egestas non ante non consequat. Aenean accumsan eros vel elit tristique, non sodales nunc luctus. Etiam vitae odio eget orci finibus auctor ut eget magna.</p>
@@ -259,7 +259,7 @@
                         </div>
                         <div>
                             <div class="details-holder">
-                                <img class="photo" src="images/person2.jpg" alt="">
+                                <img class="photo" src="{{ asset('images/person1.jpg') }}" alt="">
                                 <h4>Chris Walker</h4>
                                 <h5>CEO & CO-Founder @HelloBrandio</h5>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris egestas non ante non consequat. Aenean accumsan eros vel elit tristique, non sodales nunc luctus. Etiam vitae odio eget orci finibus auctor ut eget magna.</p>
