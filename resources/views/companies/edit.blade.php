@@ -2,52 +2,64 @@
 
 @section('content')
 
-    <div class="col-sm-9 pull-left">
-     <div class="row col-sm-12">
-         <form method="post" action="{{ route('companies.update', [$company->id]) }}">
-               {{csrf_field()}}
-
-                <input type="hidden" name="_method" value="put">
-
-                <div class="form-group">
-                    <label for="company-name">Name<span class="required">*</span></label>
-                    <input placeholder="Enter Name"
-                           id="company-name"
-                           required
-                           name="name"
-                           spellcheck="false"
-                           class="form-control"
-                           value="{{$company->name}}"
-                    >
-                </div>
-                <div class="form-group">
-                    <label for="company-content">Description</label>
-                    <textarea placeholder="Enter Description"
-                           id="company-content"
-                           name="description"
-                           rows="5"
-                           spellcheck="false"
-                           class="form-control autosize-target text-left">
-                           {{$company->description}}
-                    </textarea>
+    <div class="col-sm-9">
+        <div class="container-contact100">
+            <div class="wrap-contact100">
+                <div class="contact100-form-title" style="background-image: url({{ asset('images/bg-01.jpg') }});">
+                    <span class="contact100-form-title-1">Update a Company</span>
+                    <span class="contact100-form-title-2">Feel free to edit your own company below!</span>
                 </div>
 
-         <div class="form-group">
-         <input type="submit" class="btn btn-primary" value="Submit">
-         </div>
-         </form>
-     </div>
+                <form class="contact100-form" method="post" action="{{ route('companies.update',  [$company->id]) }}">
+                    {{csrf_field()}}
+
+                    <input type="hidden" name="_method" value="put">
+
+                    <div class="wrap-input100">
+                        <span class="label-input100">Name:</span>
+                        <input placeholder="Enter Name"
+                               id="company-name"
+                               required
+                               name="name"
+                               spellcheck="false"
+                               class="input100"
+                               value="{{$company->name}}"
+                        >
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100">
+                        <span class="label-input100">Description:</span>
+                        <textarea placeholder="Enter Description"
+                                  id="company-content"
+                                  name="description"
+                                  rows="5"
+                                  spellcheck="true"
+                                  class="input100">
+                            {{$company->description}}
+                        </textarea>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="container-contact100-form-btn">
+                        <button class="contact100-form-btn"><span>Submit<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div class="col-sm-3 pull-right">
-        <div class="sidebar-moduel">
-            <h4>Actions</h4>
-            <ol class="list-unstyled">
-                <li><a href="/companies/{{$company->id}}">View company</a></li>
-                <li><a href="/companies">All companies</a></li>
-            </ol>
+    <div class="col-sm-3">
+        <div class="container-contact100">
+            <div class="wrap-contact100">
+                <div class="btn-holder">
+                    <a href="/companies" class="ybtn ybtn-header-color">All companies</a>
+                </div>
+                <div class="btn-holder">
+                    <a href="{{route('companies.index',['id'=>'1'])}}" class="ybtn ybtn-header-color">My companies</a>
+                </div>
+            </div>
         </div>
-
     </div>
 
 @endsection
