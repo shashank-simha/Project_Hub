@@ -227,7 +227,7 @@ class TasksController extends Controller
 
             if ($TaskUpdate)
             {
-                return redirect()->route('tasks.show', ['tasks'=>$task->id])->with('success', 'Task details updated successfully');
+                return redirect()->route('tasks.show', ['tasks'=>$Task->id])->with('success', 'Task details updated successfully');
             }
             else
             {
