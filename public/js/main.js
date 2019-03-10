@@ -37,7 +37,7 @@ for (var i=0;i<=themes.length-1;i++){
                 $('head #custom-css1').attr('href',"templates/hostify/css/style-"+themes[i]+".css");
                 $('head #custom-css2').attr('href',"templates/hostify/css/styles-modified-"+themes[i]+".css");
             }else{
-                $('head #custom-css1').attr('href',"css/style-"+themes[i]+".css");
+                $('head #custom-css1').attr('href',"/css/style-"+themes[i]+".css");
             }
         }
         $('.switch',switchesHolder).removeClass('active');
@@ -62,7 +62,7 @@ for (var i=0;i<=themes.length-1;i++){
                 $('head #custom-css1').attr('href',"templates/hostify/css/style-"+themes[Number($(this).data("num"))]+".css");
                 $('head #custom-css2').attr('href',"templates/hostify/css/styles-modified-"+themes[Number($(this).data("num"))]+".css");
             }else{
-                $('head #custom-css1').attr('href',"css/style-"+themes[Number($(this).data("num"))]+".css");
+                $('head #custom-css1').attr('href',"/css/style-"+themes[Number($(this).data("num"))]+".css");
             }
             document.cookie = "hostifythemeSet="+themes[Number($(this).data("num"))];
             setCookie("hostifythemeSet", themes[Number($(this).data("num"))], 1);
